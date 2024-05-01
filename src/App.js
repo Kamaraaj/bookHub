@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import LoginLanding from "./pages/LoginLanding";
+import HomeLanding from "./pages/HomeLanding";
+import BooksListPage from "./pages/BooksListPage";
+import BookDetailPage from "./pages/BookDetailPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import AddonCart from "./pages/AddonCart";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app_Container">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" Component={ LoginLanding } />
+          <Route path="/home" Component={HomeLanding } />
+          <Route path="/BooksListPage" Component={BooksListPage } />
+          <Route path="/BookDetailPage/:bookId" Component={BookDetailPage} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
