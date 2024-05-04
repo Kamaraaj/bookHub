@@ -1,9 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import loginCover from "../data/loginLeftCoverImg.svg";
 import bookHubLogo from "../data/bookHubLogo.svg";
 import Cookies from 'js-cookie'
 import {useNavigate} from 'react-router-dom';
-const screenHeight = window.innerHeight;
 
 
 const initialData={
@@ -14,8 +13,6 @@ const LoginLanding = (prps) => {
   const navigate = useNavigate()
   const [formDatas,setFormDatas]=useState(initialData);
   const [formErrors, setFormErrors] = useState({});
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [errorShow, setErrorShow] = useState(false);
   const onChangeHandler = (e)=>{
     const name = e.target.name;
     const value = e.target.value.trim();
@@ -29,14 +26,15 @@ const LoginLanding = (prps) => {
     e.preventDefault()
     let errorFields = validate(formDatas)
     setFormErrors (errorFields);
-    apiHandler()
+    if (Object.keys(errorFields).length === 0)  apiHandler()
+   
   }
   const validate=(values)=>{
     let errors = {};
-    if (values.username == '') {
+    if (values.username === '') {
       errors.username = "Enter valid user name"
     }
-    if (values.password == ''){
+    if (values.password === ''){
       errors.password = "Enter valid password"
     }
     return errors
@@ -49,7 +47,7 @@ const LoginLanding = (prps) => {
             body: JSON.stringify(formDatas)
           }
           const responseData = await fetch(url,options) 
-          if (responseData.ok == true) {
+          if (responseData.ok === true) {
             const data = await responseData.json();
             jwtTokenHandler (data.jwt_token)
           }
@@ -57,16 +55,15 @@ const LoginLanding = (prps) => {
 
   const jwtTokenHandler = (token)=> {
     Cookies.set('jwt_token',token,{expires:30});
-    navigate('/home',{replace:true})
+    navigate('/',{replace:true})
   }
   return (
     <div className="relative bg-[#F8FAFC] px-6 pt-[32px] pb-[56px] lg:p-0  ">
       <div className="relative flex flex-col  space-y-4 lg:space-y-0 lg:flex-row lg:space-x-[72px]">
         <div className="flex justify-center items-center">
-        <div className={`w-[216px] h-[216px] max-w-[216px] max-h-[216px]  lg:w-[780px] lg:max-w-[780px] md:h-[${screenHeight}px] md:max-h-[${screenHeight}px]`}>
+        <div className= "w-[216px] h-[216px] max-w-[216px] max-h-[216px]  lg:w-[780px] lg:max-w-[780px] md:h-[60vh] md:max-h-[60vh]">
           <img
-            className="w-full h-full object-cover rounded-full lg:rounded-none"
-            // src="https://drive.google.com/uc?export=view&id=1HLIPXOsIRY7UOLchfpkGtOGlD9znKcFu"
+            className="w-full h-full object-contain rounded-full lg:rounded-none"
             src={loginCover}
             alt="LoginCover"
             width="100%"
@@ -79,7 +76,6 @@ const LoginLanding = (prps) => {
             <div className="flex justify-center ">
               <div className="mb-8 lg:mb-[48px] w-[104px] h-[28px] lg:w-[141px] lg:h-[48px]">
                 <img
-                  // src="https://drive.google.com/uc?export=view&id=17W3o2KXqPFOGXe4M3JXldAZQYy9lIXk4"
                   src={bookHubLogo}
                   className="w-full h-full object-cover"
                   alt="logo"
@@ -109,6 +105,11 @@ const LoginLanding = (prps) => {
                       className="w-full h-[56px] border border-[#C3CAD9] rounded-[8px] px-5 pt-[18px] pb-[19px] text-[16px] text-[#183B56] font-normal focus:outline-0 focus:ring-0"
                     />
                   </div>
+                  {
+                  formErrors.username && (
+                    <p className="text-[#EF4444] text-[14px] font-normal pt-2">Username is Invalid</p>
+                  )
+                }
                 </div>
                 <div className="formGroup">
                   <div className="pt-[3px] pb-3 leading-[19px]">
@@ -131,8 +132,8 @@ const LoginLanding = (prps) => {
                   </div>
                 </div>
                 {
-                  errorShow && (
-                    <p className="text-[#EF4444] text-[14px] font-normal pt-2">username or Password is Invalid</p>
+                  formErrors.password && (
+                    <p className="text-[#EF4444] text-[14px] font-normal pt-2">Password is Invalid</p>
                   )
                 }
                 <div className="mt-6 lg:mt-8"> 

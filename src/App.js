@@ -5,17 +5,19 @@ import HomeLanding from "./pages/HomeLanding";
 import BooksListPage from "./pages/BooksListPage";
 import BookDetailPage from "./pages/BookDetailPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AddonCart from "./pages/AddonCart";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 const App = () => {
   return (
     <div className="app_Container">
       <BrowserRouter>
         <Routes>
-          <Route path="/" Component={ LoginLanding } />
-          <Route path="/home" Component={HomeLanding } />
-          <Route path="/BooksListPage" Component={BooksListPage } />
-          <Route path="/BookDetailPage/:bookId" Component={BookDetailPage} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="/" element={<HomeLanding />} />
+            <Route path="/BooksListPage" element={<BooksListPage />} />
+            <Route path="/BookDetailPage/:bookId" element={<BookDetailPage />} />
+          </Route>
+          <Route path="/login" element={<LoginLanding />} />
         </Routes>
       </BrowserRouter>
     </div>

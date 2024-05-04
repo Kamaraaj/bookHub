@@ -33,7 +33,7 @@ const BookDetailPage = (props) => {
   return (
     <div>
       <Header />
-      <div className="bg-[#F5F7FA]">
+      <div className="bg-[#F5F7FA] pt-6  lg:pt-[48px]">
         <div className="px-[24px]  md:px-[150px] ">
           {isLoading ? (
             <div className="w-[320px] md:w-[800px] h-[99px] md:h-[224px] flex justify-center items-center">
